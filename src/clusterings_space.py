@@ -15,7 +15,7 @@ import hdbscan
 
 def pref(cls_df, n_dim = 3, tol_var = 0.0):
 
-    keys = cls_df.index.to_list()
+    keys = cls_df.index
     cols = cls_df.columns
     cls_df.index = range(len(cls_df.index))
     cls_df.columns = range(len(cls_df.columns))
@@ -33,7 +33,7 @@ def pref(cls_df, n_dim = 3, tol_var = 0.0):
 
 
 def hpref(cls_df, max_l = 5) :
-    keys = cls_df.index.to_list()
+    keys = cls_df.index
     cols = cls_df.columns
     cls_df.index = range(len(cls_df.index))
     cls_df.columns = range(len(cls_df.columns))
