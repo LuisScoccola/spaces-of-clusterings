@@ -1,11 +1,5 @@
 import matplotlib.pyplot as plt
 
-import plotly.plotly as py
-import plotly.graph_objs as go
-from plotly import tools
-
-#import plotly.graph_objs as go
-
 import matplotlib.cm as cm
 import numpy as np
 
@@ -19,11 +13,11 @@ def plot_dendrogram(linkage_matrix):
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.tick_params(
-      axis='x',          # changes apply to the x-axis
-      which='both',      # both major and minor ticks are affected
-      bottom=False,      # ticks along the bottom edge are off
-      top=False,         # ticks along the top edge are off
-      labelbottom=False) # labels along the bottom edge are off    
+      axis='x',
+      which='both',
+      bottom=False,
+      top=False,
+      labelbottom=False)
 
     ddata = dendrogram(linkage_matrix, show_leaf_counts=False, orientation='left',
                        color_threshold=0, above_threshold_color = '#000000', no_labels=False)
@@ -112,13 +106,9 @@ def plot_cl_space_grouping(keys, clustering, figsize=(10,10), rev=True, dotsize=
     color_names = [i * 100 / len(clustering) for i in range(max(clustering)+2)]
 
     points = np.asarray([[key[0],key[1]] for key in keys])
-    #noise_points = np.asarray([ points[i] for i in range(len(points)) if clustering[i] == -1 ])
-    #points = np.asarray([ points[i] for i in range(len(points)) if clustering[i] != -1 ])
     
     plt.figure(figsize=figsize)
     plt.scatter(points.T[1], points.T[0], c=[color_names[i] for i in clustering if i!=-1], cmap=cm.jet, s=dotsize, marker="s")
-    #if len(noise_points) > 0 :
-    #    plt.scatter(noise_points.T[1], noise_points.T[0], c=['grey']*len(noise_points), s=dotsize, marker="s")
     if rev :
         plt.gca().invert_yaxis()
     plt.grid(False)
@@ -134,5 +124,3 @@ def plot_cl_space_2d(cl_space, clustering_clspace = None, dotsize = 10, figsize 
     plt.xticks([])
     plt.yticks([])
     plt.show()
-
-

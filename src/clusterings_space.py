@@ -140,11 +140,6 @@ def dim_red(cls_df, n_dim = 3, tol_var = 0.0) :
 
     if tol_var > 0 :
         cls_df = cls_df.loc[:, cls_df.var() >= tol_var ]
-    #    low_variance_pairs = list(cls_df.T.index[cls_df.var() < tol_var])
-    #    high_variance_pairs = list(cls_df.T.index[cls_df.var() >= tol_var])
-    #else :
-    #    low_variance_pairs = []
-    #    high_variance_pairs = []
 
     # calculate how many times each column repeats
     counts = cls_df.T.groupby(cls_df.T.columns.tolist()).cumcount() + 1
@@ -152,35 +147,24 @@ def dim_red(cls_df, n_dim = 3, tol_var = 0.0) :
 
     # delete repeated columns
     cls_df_ = cls_df.T.drop_duplicates(keep='last').T
-    #print(cls_df_)
 
     representatives = cls_df_.columns.tolist()
     
-    #represented = [ list(cls_df.T.loc[ (cls_df == list(cls_df_[col])).all() ])
-    #                for col in cls_df_.columns.tolist()]
-
     # delete repeated columns from the counts dataframe and sort it
     counts = counts[cls_df_.columns.tolist()]
     counts_l = list(counts)
     counts_l.sort()
-    #print(cls_df_.columns.tolist())
 
     # keep the first n_dim columns
     min_count = counts_l[-n_dim]
 
     cls_df_ = cls_df_.loc[:, counts >= min_count]
 
-
-    #print(list(cl_space_as_df_[cl_space_as_df_.columns.tolist()[0]]))
-
-    #print((cl_space_as_df == list(cl_space_as_df_[cl_space_as_df_.columns.tolist()[0]])).all())
-
     return(cls_df_, counts_l, representatives)#, low_variance_pairs)
 
 
 
 ### standard dimension reductions
-#TO DO: dont use dictionaries
 
 # reduce dimension using pca
 def pca_reduction(cl_space, ncomponents) :
@@ -257,19 +241,20 @@ def trivial_clustering_cl_space(cls_df, rtol = 0.001):
     return(labels)
 
 # grouping equal points together
-def key_merge_dictionary(d, rtol, positions = None) : 
 
-    unique_vals = np.unique(np.asarray(list(d.values())),axis=0)
-
-    if positions == None :
-        res = [(tuple([k for k,v in d.items() if np.allclose(v,val, rtol = rtol)]), val) for val in unique_vals ]
-    else :
-        res = [(tuple([k for k,v in d.items() if np.allclose(v[:positions],val[:positions], rtol = rtol)]), val) for val in unique_vals ]
-
-    return(dict(res))
-
-def clustering_in_merged_to_clustering(points, d, clustering) :
-    return([clustering[ [i for i in range(len(d)) if p in d[i]][0] ] for p in points])
+#def key_merge_dictionary(d, rtol, positions = None) : 
+#
+#    unique_vals = np.unique(np.asarray(list(d.values())),axis=0)
+#
+#    if positions == None :
+#        res = [(tuple([k for k,v in d.items() if np.allclose(v,val, rtol = rtol)]), val) for val in unique_vals ]
+#    else :
+#        res = [(tuple([k for k,v in d.items() if np.allclose(v[:positions],val[:positions], rtol = rtol)]), val) for val in unique_vals ]
+#
+#    return(dict(res))
+#
+#def clustering_in_merged_to_clustering(points, d, clustering) :
+#    return([clustering[ [i for i in range(len(d)) if p in d[i]][0] ] for p in points])
 
 
 def group_cl_space(cl_space, eps = 0.1, method = "complete") :
@@ -283,7 +268,6 @@ def group_cl_space(cl_space, eps = 0.1, method = "complete") :
     return(groups)
 
 
-# grouping equal points together
 def key_merge_dictionary(d, rtol, positions = None) : 
 
     unique_vals = np.unique(np.asarray(list(d.values())),axis=0)
